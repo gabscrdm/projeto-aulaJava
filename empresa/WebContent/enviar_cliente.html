@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Enviar dados do cliente com AJAX e JSON</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		function sendJson() {
+			//alert("oi");
+			var cpf = document.getElementById("cpf").value; //JavaScript
+			var nome = $("#nome").val(); //JQuery
+			//alert(cpf +" - "+ nome);
+			
+			//empacotar os dados --> gerar um objeto a partir dos dados
+			var myData = {
+				"cpf":cpf,
+				"nome":nome
+			};
+			
+			$.ajax({
+				type:"POST", //implementar o método doPost na Servlet
+				url:"../empresa/cliente",
+				dataType:"json",
+				data:JSON.stringify(myData),
+				contentType:"application/json",
+				
+				//recebimento dos dados da Servlet
+				success:function(result){
+					$("div").html("<br><br>"+ result.men);
+					setTimeout(clear, 2000);
+				}
+			});
+		}
+		
+		function clear(){
+			$("div").html("");
+			document.getElementById("cpf").value = "";
+			document.getElementById("nome").value = "";
+		}
+	</script>
+</head>
+<body>
+<form name="f">
+	CPF: <input type="number" id="cpf"><br><br>
+	Nome: <input type="text" id="nome"><br><br> 
+	
+	<input type="button" value="Enviar" onclick="sendJson()">
+</form>
+<div></div>
+</body>
+</html>
